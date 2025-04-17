@@ -18,11 +18,16 @@ function ConvertHandler() {
     // Handle fraction
     if (numStr.includes('/')) {
       const [numerator, denominator] = numStr.split('/');
+      // Check for invalid denominator
+      if (parseFloat(denominator) === 0) {
+        return undefined;
+      }
       return parseFloat(numerator) / parseFloat(denominator);
     }
     
     // Handle regular number
-    return parseFloat(numStr);
+    const result = parseFloat(numStr);
+    return isNaN(result) ? undefined : result;
   };
   
   this.getUnit = function(input) {
@@ -45,6 +50,8 @@ function ConvertHandler() {
   };
   
   this.getReturnUnit = function(initUnit) {
+    if (!initUnit) return undefined;
+    
     const unitMap = {
       'gal': 'L',
       'l': 'gal',
@@ -59,6 +66,8 @@ function ConvertHandler() {
   };
 
   this.spellOutUnit = function(unit) {
+    if (!unit) return undefined;
+    
     const unitNames = {
       'gal': 'gallons',
       'l': 'liters',
@@ -73,12 +82,11 @@ function ConvertHandler() {
   };
   
   this.convert = function(initNum, initUnit) {
+    if (initNum === undefined || initUnit === undefined) return undefined;
+    
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-    const lToGal = 1 / galToL;
-    const KgToLbs = 1 / lbsToKg;
-    const KmToMi = 1 / miToKm;
 
     const unit = initUnit.toLowerCase();
 
@@ -86,25 +94,36 @@ function ConvertHandler() {
       case 'gal':
         return initNum * galToL;
       case 'l':
-        return initNum * lToGal;
       case 'L':
-        return initNum * lToGal; // L is treated as liters
+        return initNum / galToL; // L is treated as liters
       case 'mi':
         return initNum * miToKm;
       case 'km':
-        return initNum * KmToMi;
+        return initNum / miToKm;
       case 'lbs':
         return initNum * lbsToKg;
       case 'kg':
-        return initNum * KgToLbs;
+        return initNum / lbsToKg;
       default:
         return undefined;
     }
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
+    // Handle errors for invalid inputs
+    if (initNum === undefined && initUnit === undefined) {
+    return 'invalid number and unit';
+    }
+    if (initNum === undefined) {
+      return 'invalid number';
+    }
+    if (initUnit === undefined) {
+      return 'invalid unit';
+    }
+
     return `${initNum} ${this.spellOutUnit(initUnit)} converts to ${returnNum.toFixed(5)} ${this.spellOutUnit(returnUnit)}`;
   };
 }
 
 module.exports = ConvertHandler;
+
