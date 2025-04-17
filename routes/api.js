@@ -7,13 +7,12 @@ module.exports = function (app) {
   
   let convertHandler = new ConvertHandler();
 
-  app.route("/api/convert").get(function (req, res) {
+  app.route('/api/convert').get(function (req, res) {
     let input = req.query.input;
     let initNum = convertHandler.getNum(input);
     let initUnit = convertHandler.getUnit(input);
-
-    // Check for invalid inputs - correct order and conditions
-    if (initNum === undefineed && initUnit === undefined) {
+    
+    if (initNum === undefined && initUnit === undefined) {
       return res.json("invalid number and unit");
     }
     if (initNum === undefined) {
@@ -22,11 +21,17 @@ module.exports = function (app) {
     if (initUnit === undefined) {
       return res.json("invalid unit");
     }
-
+    
     let returnNum = convertHandler.convert(initNum, initUnit);
     let returnUnit = convertHandler.getReturnUnit(initUnit);
-    let toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
-
-    res.json({ initNum, initUnit, returnNum, returnUnit, string: toString });
+    let string = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
+    
+    return res.json({
+      initNum,
+      initUnit,
+      returnNum,
+      returnUnit,
+      string
+    });
   });
 };
