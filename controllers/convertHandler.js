@@ -87,26 +87,36 @@ function ConvertHandler() {
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
-
+  
     const unit = initUnit.toLowerCase();
-
+    let result;
+  
     switch(unit) {
       case 'gal':
-        return initNum * galToL;
+        result = initNum * galToL;
+        break;
       case 'l':
       case 'L':
-        return initNum / galToL; // L is treated as liters
+        result = initNum / galToL;
+        break;
       case 'mi':
-        return initNum * miToKm;
+        result = initNum * miToKm;
+        break;
       case 'km':
-        return initNum / miToKm;
+        result = initNum / miToKm;
+        break;
       case 'lbs':
-        return initNum * lbsToKg;
+        result = initNum * lbsToKg;
+        break;
       case 'kg':
-        return initNum / lbsToKg;
+        result = initNum / lbsToKg;
+        break;
       default:
         return undefined;
     }
+    
+    // Return as a number with precision control (5 decimal places)
+    return parseFloat(result.toFixed(5));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
@@ -126,4 +136,3 @@ function ConvertHandler() {
 }
 
 module.exports = ConvertHandler;
-
