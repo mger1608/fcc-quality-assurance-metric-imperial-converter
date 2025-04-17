@@ -11,16 +11,18 @@ module.exports = function (app) {
     let input = req.query.input;
     let initNum = convertHandler.getNum(input);
     let initUnit = convertHandler.getUnit(input);
-    if (!initNum && initNum) {
-      res.send("Invalid number and unit");
-      return;
-    } else if (!initNum) {
-      res.send("Invalid number");
-      return;
-    } else if (!initUnit) {
-      res.send("Invalid unit");
-      return;
+
+    // Check for invalid inputs - correct order and conditions
+    if (initNum === undefineed && initUnit === undefined) {
+      return res.json("invalid number and unit");
     }
+    if (initNum === undefined) {
+      return res.json("invalid number");
+    }
+    if (initUnit === undefined) {
+      return res.json("invalid unit");
+    }
+
     let returnNum = convertHandler.convert(initNum, initUnit);
     let returnUnit = convertHandler.getReturnUnit(initUnit);
     let toString = convertHandler.getString(initNum, initUnit, returnNum, returnUnit);
