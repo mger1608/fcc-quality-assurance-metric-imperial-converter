@@ -5,7 +5,7 @@ const ConvertHandler = require('../controllers/convertHandler.js');
 let convertHandler = new ConvertHandler();
 
 suite('Unit Tests', function(){
-    suite("Function convertHandleer.getNum(input)", function() {
+    suite("Function convertHandler.getNum(input)", function() {
         test("Whole number input", function(done) {
             let input = "32L";
             assert.equal(convertHandler.getNum(input), 32);
@@ -75,7 +75,7 @@ suite('Unit Tests', function(){
                 "kg",
             ];
             input.forEach(function (ele, index) {
-                assert.equal(convertHandler.getUnit(ele), chai.expect[index]);
+                assert.equal(convertHandler.getUnit(ele), output[index]);
             });
             done();
         });
@@ -105,7 +105,7 @@ suite('Unit Tests', function(){
                 "lbs"
             ];
             input.forEach(function(ele, index) {
-                assert.equal(convertHandler.getReturnUnit(ele), chai.expect[index]);
+                assert.equal(convertHandler.getReturnUnit(ele), output[index]);
             });
             done();
         });
@@ -130,13 +130,13 @@ suite('Unit Tests', function(){
                 "kilograms",
             ];
             input.forEach(function(ele, index) {
-                assert.equal(convertHandler.spellOutUnit(ele), chai.expect[index]);
+                assert.equal(convertHandler.spellOutUnit(ele), output[index]);
             });
             done();
         });
     });
 
-    suite("Function converHandler.conver(num, unit)", function () {
+    suite("Function convertHandler.convert(num, unit)", function () {
         test("Gal to L", function (done) {
             let input = [5, "gal"];
             let expeected = 18.9271;
